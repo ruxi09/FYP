@@ -1,0 +1,67 @@
+Firstly tried something more basic like:
+
+#include <boost/contract/call_if.hpp>
+#include <type_traits> // true_type / false_type
+#include <functional> // std::function
+#include <iostream>
+
+int main() {
+  // Define a function that takes no arguments and returns void
+  auto foo = [] () {
+    std::cout << "Called foo()" << std::endl;
+  };
+
+  // Build a branch object that calls foo() if the condition is true
+  std::function<void()> branch = boost::contract::call_if<std::true_type>(foo).template return_<std::function<void()>>();
+
+  // Call the branch object
+  branch();  // Output: Called foo()
+
+  return 0;
+}
+
+
+Then:
+#include <boost/contract/call_if.hpp>
+#include <functional> // std::function
+#include <iostream>
+
+int main() {
+  // Define a function that takes no arguments and returns void
+  auto foo = [] () {
+    std::cout << "Called foo()" << std::endl;
+  };
+
+  // Define a function that takes no arguments and returns void
+  auto bar = [] () {
+    std::cout << "Called bar()" << std::endl;
+  };
+
+  // Define a runtime value to use as the condition for the branch object
+  bool condition = true;
+
+  // Build a branch object that calls foo() if the condition is true,
+  // and bar() if the condition is false
+  std::function<void()> branch = boost::contract::call_if<std::integral_constant<bool, condition>>(foo).else_(bar).return_<std::function<void()>>();
+
+  // Call the branch object
+  branch();  // Output: Called foo()
+
+  // Modify the condition value
+  condition = false;
+
+  // Build a new branch object using the modified condition value
+  std::function<void()> branch2 = boost::contract::call_if<std::integral_constant<bool, condition>>(foo).else_(bar).return_<std::function<void()>>();
+
+  // Call the branch object
+  branch2();  // Output: Called bar()
+
+  return 0;
+}
+In this code, the call_if function template is called with a template argument of type std::integral_constant<bool, condition>, where condition is a runtime value of type bool. This allows the branch object to use the current value of condition as the condition for deciding which function to call.
+
+The call_if function template returns an object of type call_if_statement, which has else_ and return_ member functions that can be used to specify the behavior of the branch object when the condition is false, and to specify the type of the object to be returned, respectively.
+
+The problem is that the condition variable is not a compile-time constant, and therefore cannot be used as a non-type template argument.
+
+To fix this, you can use a type trait like std::is_same to determine at compile-time whether condition is equal to true or false, and pass the result as the template argument to call_if. Here's an example of how you could do this:

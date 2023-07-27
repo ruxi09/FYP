@@ -1,0 +1,122 @@
+CALL_IF
+--------//
+
+The call_if function is a template that takes a function and a boolean value as
+arguments, and calls the function if the boolean value is true.
+
+Code idea:
+/-----------------------------------------------------------------------------/
+#include <boost/contract.hpp>
+#include <iostream>
+
+int main() {
+  // Define a function to be called
+  auto foo = []() {
+    std::cout << "Called foo()" << std::endl;
+  };
+
+  // Call the function using the boost::contract::call_if function
+  boost::contract::call_if(foo, true);  // Output: Called foo()
+  boost::contract::call_if(foo, false); // Output: (nothing)
+
+  return 0;
+}
+/-----------------------------------------------------------------------------/
+
+Note that the boost::contract::call_if function is a template, so we need to
+specify the type of the function as a template parameter. In this example, we
+used a lambda function as the function to be called, but we can also use a
+function object or a function pointer.
+
+We can obtain a reference to the 'boost::contract::call_if' function by using 
+the address-of operator & to get the memory address of the function. For 
+example, we can define a function pointer 'func' and bind.
+
+We can use the boost::contract::call_if function from the Boost.Contract
+library to create a branch object that allows us to conditionally execute a
+block of code based on a boolean value.
+
+To create a branch object, we can define a class that takes a boolean value
+and a function as arguments in its constructor, and defines a operator() 
+function that calls the function if the boolean value is true. We can then use
+an instance of the class as a function object to conditionally execute the code
+block.
+
+This code defines a class branch that represents a branch object. The branch 
+class takes a boolean value and a function as arguments in its constructor, and
+stores them in private member variables. It defines a operator() function that
+calls the boost::contract::call_if function to conditionally execute the
+function based on the boolean value.
+
+We can create an instance of the branch class by passing a boolean value and a
+function as arguments to the constructor. We can then call the instance like a
+function to execute the code block conditionally. In this example, we used a
+lambda function as the function to be called, but we can also use a function
+object or a function pointer.
+
+We can change the direction of a branch object at runtime by modifying the
+boolean value that determines the condition of the object.
+
+To change the direction of a branch object at runtime, we can define a setter
+function that allows us to update the boolean value that determines the
+condition of the object. 
+
+
+/-----------------------------------------------------------------------------/
+/-----------------------------------------------------------------------------/
+/-----------------------------------------------------------------------------/
+COMPILE TIME CONSTANT VS RUNTIME VALUE
+--------------------------------------/
+In C++, a compile-time constant is a value that is known at compile time and is
+not expected to change during runtime. A runtime value, on the other hand, is a
+value that is not known at compile time and can change during runtime.
+
+Compile-time constants are often used to specify values that are used in the
+program but do not need to be changed during runtime. They are evaluated at
+compile time and the resulting value is used in the generated code. This can be
+more efficient than using runtime values, because the value does not need to be
+evaluated or computed at runtime.
+
+Compile-time constants can be defined using various mechanisms in C++, such as
+constexpr variables, enum types, and template parameters.
+
+Compile-time constants are often used in template programming, where the value
+of the constant determines the generated code. They can also be used in other
+contexts, such as when defining arrays with fixed sizes, or when specifying the
+size of a buffer that is used to store data.
+
+Runtime values, on the other hand, are values that are not known at compile
+time and can change during runtime. They are typically stored in variables and
+can be modified using assignment or other operations. For example:
+
+In general, compile-time constants are more efficient than runtime values,
+because they can be evaluated at compile time and the resulting value can be
+used in the generated code. However, they are not as flexible as runtime values
+because they cannot be changed during runtime. The choice between using
+compile-time constants or runtime values will depend on the specific
+requirements and constraints of the application.
+
+/-----------------------------------------------------------------------------/
+/-----------------------------------------------------------------------------/
+/-----------------------------------------------------------------------------/
+CALL_IF_C
+--------//
+
+The boost::contract::call_if_c function template takes two arguments: a 
+function and a boolean constant. If the boolean constant is true, the function
+is called; otherwise, the function is not called.
+
+We can use the boost::contract::call_if_c function template as an alternative
+to the boost::contract::call_if function if we want to specify the condition
+as a compile-time constant rather than a runtime value. This can be useful in
+certain optimization scenarios, where the condition can be evaluated at compile
+time and the function call can be optimized away if the condition is false.
+
+We can use the boost::contract::call_if_c function template in the same way as
+the boost::contract::call_if function to create a branch object that allows us
+to conditionally execute a block of code based on a boolean value. Simply
+define a class that takes a function as an argument in its constructor, and
+defines a operator() function that calls the boost::contract::call_if_c
+function template with the function and a boolean constant as arguments. We
+can then use an instance of the class as a function object to conditionally
+execute the code block.
